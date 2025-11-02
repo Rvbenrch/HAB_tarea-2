@@ -2,7 +2,9 @@
 # Tarea 2: Network Propagation
 ---
 **Autor**: Rubén M. Rodríguez Chamorro
+
 **Asignatura**: Herramientas biológicas
+
 **Fecha**: 2 Noviembre 2025
 ---
 <details>
