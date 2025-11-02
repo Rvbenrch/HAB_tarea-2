@@ -1,0 +1,20 @@
+{
+  "timestamp": "20251102-170101",
+  "network": "data/string_network_filtered_hugo-400.tsv",
+  "network_format": "string",
+  "nodes": 18889,
+  "edges": 894129,
+  "seeds_input": [
+    "ENO1",
+    "HK2",
+    "PGK1"
+  ],
+  "seeds_in_network": [
+    "ENO1",
+    "HK2",
+    "PGK1"
+  ],
+  "seeds_not_found": [],
+  "k": 200,
+  "scipy_available": true
+}
