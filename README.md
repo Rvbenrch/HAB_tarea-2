@@ -1,6 +1,9 @@
 
 # Tarea 2: Network Propagation
 
+<details>
+<summary>Mostrar Enunciado</summary>
+
 Escribe un script en Python que implemente un ejemplo de propagación en redes utilizando algún algoritmo de **GUILD** y/o **DIAMOnD**. Usa los genes **ENO1**, **PGK1** y **HK2** como semillas. Se proporcionan archivos de red formateada para ambos algoritmos, así como una red filtrada obtenida de STRING y un script de ejemplo para procesarla.
 
 ## Estructura del repositorio
@@ -52,4 +55,111 @@ networkx
 pandas
 
 ```
+
+</details>
+
+
+
+---
+
+## Descripción
+
+En esta práctica implementamos el algoritmo de propagación en redes **DIAMOnD** en Python sobre una red de interacción de proteínas (STRING HUGO). 
+Como semillas utilizamos los genes **ENO1, PGK1, HK2**.
+
+DIAMOnD permite identificar nodos relevantes en la red que podrían estar funcionalmente relacionados con las semillas, expandiendo así el "módulo de enfermedad" a partir del conocimiento previo.
+
+---
+
+## Uso
+
+1. **Instala las dependencias:**  
+   (preferiblemente en un entorno virtual)
+
+
+2. **Ejecuta el script** desde la raíz del repo:
+
+```{bash}
+python scripts/rubenscript.py
+--network data/string_network_filtered_hugo-400.tsv
+--network-format string
+--seeds data/genes_seed.txt
+--k 200
+--outdir results
+```
+
+
+3. **Se generarán los siguientes resultados en `/results`:**
+- `diamond_ranking.tsv`: Tabla con los nodos del ranking DIAMOnD y sus p-valores.
+- `top20_barplot.png`: Gráfico de barras con los 20 nodos más significativos.
+- `diamond_params.json`: Metainformación de la corrida (semillas, parámetros, red, etc).
+- `subgraph_top50.edgelist`: Subred extraída de los 50 principales nodos.
+
+---
+
+## Ejemplo de resultados
+
+### Top 20 nodos según DIAMOnD
+
+![](results/top20_barplot.png)
+
+- El gráfico muestra los 20 nodos de la red más relevantes según DIAMOnD, medidos por el -log10(p-valor).
+- Entre los nodos principales aparecen genes relacionados con el metabolismo glucolítico y la red de semilla (p. ej., **ALDOA**, **PKM**, **HK1**, **HK3**, **FBP1**), lo que valida biológicamente tanto el algoritmo como la red empleada.
+
+### Ranking producido (`diamond_ranking.tsv`)
+
+| rank | node   | k_links_to_module | p_value         |
+|------|--------|-------------------|-----------------|
+| 1    | ADPGK  | 3                 | 1.97e-08        |
+| 2    | HKDC1  | 4                 | 2.55e-10        |
+| 3    | GALM   | 5                 | 1.84e-12        |
+| ...  | ...    | ...               | ...             |
+| 20   | ALDOA  | 21                | 5.28e-41        |
+
+- Este archivo permite ver el orden de propagación y el grado de conexión funcional de cada nodo con las semillas.
+
+### Metadatos (`diamond_params.json`)
+
+```{bash}
+
+{
+"network": "data/string_network_filtered_hugo-400.tsv",
+"nodes": 18889,
+"edges": 894129,
+"seeds_input": ["ENO1", "HK2", "PGK1"],
+"seeds_in_network": ["ENO1", "HK2", "PGK1"],
+"k": 200,
+"scipy_available": true
+}
+```
+
+- El script detecta si las semillas están en la red y confirma el uso de la versión eficiente (SciPy).
+
+---
+
+## Interpretación de resultados
+
+- **DIAMOnD** identifica genes conectados funcionalmente a las semillas iniciales en la red de proteínas, priorizando aquellos con mayor asociación estadística basada en hipergeometría.
+- El ranking obtenido permite generar hipótesis sobre otros posibles miembros funcionales del módulo, útiles para estudios posteriores (por ejemplo, genes candidatos o relaciones clave).
+- La subred generada y la gráfica permiten visualizar y explorar los resultados de forma reproducible.
+
+---
+
+## Dependencias
+
+- `pandas`
+- `numpy`
+- `matplotlib`
+- `networkx`
+- `scipy`
+
+---
+
+## Contacto y licencia
+
+Entrega elaborada por [Rvbenrch].  
+Licencia MIT.
+
+
+
 
